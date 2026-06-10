@@ -18,6 +18,7 @@ COPY --from=builder /install /usr/local
 COPY app/ .
 COPY tests/ /app/tests/
 
+RUN python -m pip install --no-cache-dir --upgrade pip==26.1.2
 RUN useradd --create-home appuser
 
 USER appuser
