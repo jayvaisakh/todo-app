@@ -494,11 +494,11 @@ docker-compose logs --tail=20 app
 
 ---
 
-## Author
 
-<h2>Vaisakh Jayan</h2>
 
-<h3>Cloud & DevOps Learner</h3>
+### Vaisakh Jayan
+
+#### Cloud & DevOps Learner
 
 <p align="left">
   <a href="https://medium.com/@jaynvaisak" target="_blank">
