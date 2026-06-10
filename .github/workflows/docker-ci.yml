@@ -12,7 +12,7 @@ on:
       - main
 
 jobs:
-  test-build-push:
+  test-build-scan-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -42,6 +42,14 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t jayvaisakh/todo-app:test .
+
+      - name: Scan Docker image with Trivy
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:0.69.3 \
+            image --severity HIGH,CRITICAL --no-progress --exit-code 0 \
+            jayvaisakh/todo-app:test
 
       - name: Log in to Docker Hub
         if: github.event_name == 'push'
