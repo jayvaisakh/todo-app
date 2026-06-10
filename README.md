@@ -496,21 +496,18 @@ docker-compose logs --tail=20 app
 
 ## Author
 
-<h2>Vaisakh J</h2>
+<h2>Vaisakh Jayan</h2>
 
-Cloud & DevOps Learner
+<h3>Cloud & DevOps Learner</h3>
 
 <p align="left">
-  <a href="https://github.com/jayvaisakh" target="_blank">
-    <img src="https://img.icons8.com/fluency/96/github.png" width="50" height="50" alt="GitHub"/>
-  </a>
-  &nbsp;&nbsp;&nbsp;
-  <a href="https://www.linkedin.com/in/jayvaisakh/" target="_blank">
-    <img src="https://img.icons8.com/color/96/linkedin.png" width="50" height="50" alt="LinkedIn"/>
-  </a>
-  &nbsp;&nbsp;&nbsp;
   <a href="https://medium.com/@jaynvaisak" target="_blank">
-    <img src="https://img.icons8.com/color/96/medium-monogram.png" width="50" height="50" alt="Medium"/>
+    <img src="https://img.shields.io/badge/Medium-000000?style=flat&logo=medium&logoColor=white" />
+  </a>
+  <a href="https://www.linkedin.com/in/jayvaisakh/" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="https://github.com/jayvaisakh" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white" />
   </a>
 </p>
-
