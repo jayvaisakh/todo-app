@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Todo</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --card: rgba(17, 24, 39, 0.82);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --accent: #7c3aed;
+            --accent-two: #06b6d4;
+            --success: #22c55e;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Ubuntu", sans-serif;
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(124, 58, 237, 0.25),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(6, 182, 212, 0.18),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #0b1120,
+                    #111827,
+                    #0f172a
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 860px;
+            min-height: 620px;
+            padding: 32px;
+
+            border-radius: 28px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .summary {
+            max-width: 520px;
+            margin: 0 auto 28px;
+            padding: 24px 28px;
+
+            border-radius: 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .summary h1 {
+            font-size: 2rem;
+            margin-bottom: 6px;
+        }
+
+        .summary p {
+            color: var(--muted);
+        }
+
+        .progress {
+            width: 110px;
+            height: 110px;
+            flex-shrink: 0;
+
+            border-radius: 32px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    var(--accent-two)
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: white;
+
+            box-shadow:
+                0 10px 30px rgba(124, 58, 237, 0.35);
+        }
+
+        .task-form {
+            max-width: 520px;
+            margin: 0 auto 28px;
+
+            display: flex;
+            gap: 12px;
+        }
+
+        .task-form input {
+            flex: 1;
+            height: 54px;
+            padding: 0 18px;
+
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            outline: none;
+
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+
+            font-family: "Ubuntu", sans-serif;
+            font-size: 1rem;
+        }
+
+        .task-form input::placeholder {
+            color: #7c8aa5;
+        }
+
+        .task-form input:focus {
+            border-color: var(--accent-two);
+            box-shadow:
+                0 0 0 3px rgba(6, 182, 212, 0.12);
+        }
+
+        .task-form button {
+            width: 54px;
+            height: 54px;
+
+            border: none;
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    var(--accent-two)
+                );
+
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+
+            cursor: pointer;
+            transition:
+                transform 0.2s ease,
+                opacity 0.2s ease;
+        }
+
+        .task-form button:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        .task-list {
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+
+            padding: 16px 18px;
+            margin-bottom: 14px;
+
+            border-radius: 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .task:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.16);
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            min-width: 0;
+            flex: 1;
+        }
+
+        .tick {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+
+            border-radius: 8px;
+            border: 2px solid var(--accent-two);
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .task.completed .tick {
+            background: var(--success);
+            border-color: var(--success);
+
+            box-shadow:
+                0 0 0 4px rgba(34, 197, 94, 0.12);
+        }
+
+        .task.completed .tick::after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .title {
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .task.completed .title {
+            color: var(--muted);
+            text-decoration: line-through;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+            color: var(--text);
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .delete-btn {
+            color: #fca5a5;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.18);
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--muted);
+
+            padding: 36px 10px;
+            border-radius: 18px;
+
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 14px;
+            }
+
+            .app {
+                padding: 22px 18px;
+                border-radius: 22px;
+            }
+
+            .summary {
+                padding: 20px;
+            }
+
+            .summary h1 {
+                font-size: 1.5rem;
+            }
+
+            .progress {
+                width: 88px;
+                height: 88px;
+                border-radius: 26px;
+                font-size: 1.3rem;
+            }
+
+            .task-form input {
+                font-size: 0.95rem;
+            }
+
+            .title {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="app">
+
+        <div class="topbar">
+            <div class="logo">Todo</div>
+        </div>
+
+        {% set completed_count =
+            tasks
+            | selectattr("completed", "equalto", 1)
+            | list
+            | length
+        %}
+
+        {% set total_count = tasks | length %}
+
+        <section class="summary">
+            <div>
+                <h1>Tasks Overview</h1>
+                <p>Stay focused and finish strong</p>
+            </div>
+
+            <div class="progress">
+                {{ completed_count }}/{{ total_count }}
+            </div>
+        </section>
+
+        <form
+            class="task-form"
+            action="{{ url_for('add_task') }}"
+            method="POST"
+        >
+            <input
+                type="text"
+                name="title"
+                placeholder="Write your next task..."
+                maxlength="255"
+                required
+            >
+
+            <button type="submit">+</button>
+        </form>
+
+        <section class="task-list">
+
+            {% if tasks %}
+
+                {% for task in tasks %}
+
+                    <article
+                        class="task
+                        {% if task.completed %}
+                            completed
+                        {% endif %}
+                        "
+                    >
+                        <div class="task-left">
+
+                            <a
+                                class="tick"
+                                href="{{ url_for(
+                                    'toggle_task',
+                                    task_id=task.id
+                                ) }}"
+                                title="Toggle task status"
+                            ></a>
+
+                            <span class="title">
+                                {{ task.title }}
+                            </span>
+
+                        </div>
+
+                        <div class="actions">
+
+                            <a
+                                class="action-btn"
+                                href="{{ url_for(
+                                    'toggle_task',
+                                    task_id=task.id
+                                ) }}"
+                                title="Toggle task"
+                            >
+                                ✓
+                            </a>
+
+                            <a
+                                class="action-btn delete-btn"
+                                href="{{ url_for(
+                                    'delete_task',
+                                    task_id=task.id
+                                ) }}"
+                                title="Delete task"
+                            >
+                                🗑
+                            </a>
+
+                        </div>
+                    </article>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="empty">
+                    No tasks yet. Add your first task.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+</body>
+</html>
