@@ -1,14 +1,14 @@
 # Containerized Full-Stack To-Do Application
 
-A production-ready full-stack To-Do Management Application built using **Python Flask**, **MySQL**, **Nginx**, **Docker**, **Docker Compose**, **GitHub Actions**, and **Docker Hub**.
+A production-ready full-stack To-Do Management Application built using **Python Flask**, **MySQL**, **Nginx**, **Docker**, **Docker Compose**, **GitHub Actions**, **Docker Hub**, **Prometheus**, and **Grafana**.
 
-This project demonstrates full application containerization, database persistence, reverse proxy configuration, CI/CD automation, Docker image publishing, security scanning, health checks, and logging.
+This project demonstrates full application containerization, database persistence, reverse proxy configuration, CI/CD automation, Docker image publishing, security scanning, health checks, logging, and monitoring with Prometheus and Grafana.
 
 ---
 
 ## Project Objective
 
-The objective of this project is to design, develop, containerize, and deploy a production-ready To-Do Management Application using Python, MySQL, Docker, Docker Compose, GitHub Actions, and Docker Hub.
+The objective of this project is to design, develop, containerize, and deploy a production-ready To-Do Management Application using Python, MySQL, Docker, Docker Compose, GitHub Actions, Docker Hub, and monitoring tools.
 
 ---
 
@@ -22,6 +22,7 @@ This application allows users to:
 - Delete tasks
 - Store task data permanently in MySQL
 - Access the application through an Nginx reverse proxy
+- Monitor application health and request metrics using Prometheus and Grafana
 
 ---
 
@@ -35,6 +36,8 @@ This application allows users to:
   <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
   <img src="https://img.shields.io/badge/Docker_Hub-Registry-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  <img src="https://img.shields.io/badge/Prometheus-Monitoring-E6522C?style=for-the-badge&logo=prometheus&logoColor=white" />
+  <img src="https://img.shields.io/badge/Grafana-Dashboard-F46800?style=for-the-badge&logo=grafana&logoColor=white" />
   <img src="https://img.shields.io/badge/Pytest-Testing-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" />
   <img src="https://img.shields.io/badge/Flake8-Code_Quality-green?style=for-the-badge" />
   <img src="https://img.shields.io/badge/pip--audit-Dependency_Scan-orange?style=for-the-badge" />
@@ -51,6 +54,8 @@ This application allows users to:
 | Multi-container Deployment | Docker Compose |
 | CI/CD | GitHub Actions |
 | Image Registry | Docker Hub |
+| Monitoring | Prometheus |
+| Visualization | Grafana |
 | Unit Testing | Pytest |
 | Code Quality | Flake8 |
 | Dependency Security Scan | pip-audit |
@@ -77,6 +82,19 @@ MySQL Database Container
     |
     v
 Persistent Docker Volume
+
+
+Monitoring Flow:
+
+Flask Application Container
+    |
+    | exposes /metrics
+    v
+Prometheus Container
+    |
+    | data source
+    v
+Grafana Dashboard
 ```
 
 ---
@@ -95,6 +113,12 @@ todo-app/
 │   └── init.sql
 ├── nginx/
 │   └── nginx.conf
+├── monitoring/
+│   ├── prometheus.yml
+│   └── grafana/
+│       └── provisioning/
+│           └── datasources/
+│               └── datasource.yml
 ├── tests/
 │   └── test_app.py
 ├── .github/
@@ -110,7 +134,9 @@ todo-app/
 │   ├── pip-audit.png
 │   ├── trivy-github-actions.png
 │   ├── health-endpoint.png
-│   └── nginx-logs.png
+│   ├── nginx-logs.png
+│   ├── prometheus-targets.png
+│   └── grafana-dashboard.png
 ├── Dockerfile
 ├── docker-compose.yml
 ├── .dockerignore
@@ -167,6 +193,14 @@ todo-app/
 
 ![Nginx Logs](screenshots/nginx-logs.png)
 
+### 11. Prometheus Targets
+
+![Prometheus Targets](screenshots/prometheus-targets.png)
+
+### 12. Grafana Dashboard
+
+![Grafana Dashboard](screenshots/grafana-dashboard.png)
+
 ---
 
 ## Features Implemented
@@ -176,7 +210,8 @@ todo-app/
 - Built a To-Do application using Python Flask
 - Implemented task add, delete, and complete/pending features
 - Used HTML template for frontend UI
-- Added `/health` endpoint for monitoring
+- Added `/health` endpoint for application health checking
+- Added `/metrics` endpoint for Prometheus monitoring
 
 ### 2. Database Layer
 
@@ -202,7 +237,10 @@ Docker Compose includes:
 - Python Flask application service
 - MySQL database service
 - Nginx reverse proxy service
+- Prometheus monitoring service
+- Grafana dashboard service
 - Persistent MySQL volume
+- Persistent Grafana volume
 - Custom Docker bridge network
 - Environment-based configuration using `.env`
 
@@ -254,11 +292,26 @@ Security practices implemented:
 Monitoring and logging implemented using:
 
 - Flask `/health` endpoint
+- Flask `/metrics` endpoint
 - Docker health checks
 - MySQL health check
 - `docker-compose ps` container status
 - Nginx access logs
 - Docker container logs
+- Prometheus metrics collection
+- Grafana monitoring dashboard
+
+Prometheus scrapes application metrics from:
+
+```text
+app:5000/metrics
+```
+
+Grafana connects to Prometheus using:
+
+```text
+http://prometheus:9090
+```
 
 ---
 
@@ -315,9 +368,11 @@ docker-compose ps
 Expected result:
 
 ```text
-todo-app     Up (healthy)
-todo-mysql   Up (healthy)
-todo-nginx   Up
+todo-app          Up (healthy)
+todo-grafana      Up
+todo-mysql        Up (healthy)
+todo-nginx        Up
+todo-prometheus   Up
 ```
 
 ### 5. Access the Application
@@ -346,6 +401,124 @@ Expected output:
 
 ---
 
+## Monitoring with Prometheus and Grafana
+
+This project includes application monitoring using Prometheus and Grafana.
+
+### Monitoring URLs
+
+```text
+To-Do App    → http://localhost:8081
+Prometheus  → http://localhost:9090
+Grafana     → http://localhost:3000
+```
+
+### Prometheus
+
+Prometheus collects metrics from the Flask application.
+
+The Flask app exposes metrics at:
+
+```text
+http://localhost:8081/metrics
+```
+
+Inside the Docker network, Prometheus scrapes:
+
+```text
+app:5000/metrics
+```
+
+Prometheus target page:
+
+```text
+http://localhost:9090/targets
+```
+
+Expected target status:
+
+```text
+todo-app    UP
+```
+
+### Grafana
+
+Grafana is used to visualize Prometheus metrics.
+
+Grafana login:
+
+```text
+Username: admin
+Password: admin
+```
+
+Dashboard name:
+
+```text
+To-Do App Monitoring
+```
+
+Dashboard panels created:
+
+```text
+1. To-Do App Status
+2. To-Do App Request Count
+3. Request Rate
+```
+
+### Metrics Used
+
+The application tracks request count using Prometheus Counter metrics.
+
+Main metric:
+
+```text
+todo_app_requests_total
+```
+
+Useful PromQL queries:
+
+```promql
+up{job="todo-app"}
+```
+
+```promql
+sum by (endpoint, method) (todo_app_requests_total)
+```
+
+```promql
+sum(rate(todo_app_requests_total[1m]))
+```
+
+### Verify Metrics from Terminal
+
+```bash
+curl http://localhost:8081/metrics | grep todo_app_requests_total
+```
+
+Expected output includes request metrics for endpoints such as:
+
+```text
+/
+/health
+/metrics
+/add
+/toggle
+/delete
+```
+
+### Monitoring Screenshots
+
+#### Prometheus Target Status
+
+![Prometheus Targets](screenshots/prometheus-targets.png)
+
+#### Grafana Dashboard
+
+![Grafana Dashboard](screenshots/grafana-dashboard.png)
+
+---
+
 ## Database Verification
 
 Check stored tasks directly from MySQL:
@@ -364,6 +537,12 @@ Run Pytest inside the app container:
 docker-compose run --rm app sh -c "cd /app && python -m pytest -q -p no:cacheprovider tests"
 ```
 
+Expected result:
+
+```text
+1 passed
+```
+
 ---
 
 ## Code Quality Check
@@ -372,6 +551,12 @@ Run Flake8:
 
 ```bash
 docker-compose run --rm app flake8 /app
+```
+
+Expected result:
+
+```text
+No output means the code quality check passed.
 ```
 
 ---
@@ -442,6 +627,28 @@ GitHub Actions workflow:
 https://github.com/jayvaisakh/todo-app/actions
 ```
 
+CI/CD flow:
+
+```text
+Code Push
+   ↓
+GitHub Actions
+   ↓
+Flake8 Code Quality Check
+   ↓
+Pytest Unit Test
+   ↓
+Docker Image Build
+   ↓
+Trivy Image Scan
+   ↓
+Docker Hub Login
+   ↓
+Docker Image Push
+   ↓
+Docker Hub latest/version tag
+```
+
 ---
 
 ## Useful Docker Commands
@@ -450,6 +657,12 @@ Start containers:
 
 ```bash
 docker-compose up -d
+```
+
+Start and rebuild containers:
+
+```bash
+docker-compose up --build -d
 ```
 
 Stop containers:
@@ -482,19 +695,129 @@ View app logs:
 docker-compose logs --tail=20 app
 ```
 
+View Prometheus logs:
+
+```bash
+docker-compose logs --tail=20 prometheus
+```
+
+View Grafana logs:
+
+```bash
+docker-compose logs --tail=20 grafana
+```
+
+Check Docker volumes:
+
+```bash
+docker volume ls
+```
+
+Check MySQL volume:
+
+```bash
+docker volume ls | grep mysql
+```
+
+---
+
+## Problems Faced and Fixes
+
+### 1. Docker images and containers were removed
+
+Problem:
+
+```text
+Docker containers and images were removed from the local system.
+```
+
+Fix:
+
+```bash
+docker-compose up --build -d
+```
+
+Docker rebuilt the application image and pulled required images again.
+
+### 2. Grafana and Prometheus were missing from docker-compose ps
+
+Problem:
+
+```text
+Prometheus and Grafana were not visible in docker-compose ps.
+```
+
+Fix:
+
+```bash
+docker-compose up -d prometheus grafana
+docker-compose ps
+```
+
+### 3. Nginx container exited
+
+Problem:
+
+```text
+todo-nginx showed Exit 0.
+```
+
+Fix:
+
+```bash
+docker-compose up -d nginx
+docker-compose ps
+```
+
+### 4. MySQL data persistence confusion
+
+Problem:
+
+```text
+It was unclear where MySQL stores the task data.
+```
+
+Explanation:
+
+```text
+MySQL stores data inside /var/lib/mysql in the container.
+That path is mounted to the Docker named volume mysql_data.
+So the database data persists even if the container is removed.
+```
+
+---
+
+## What I Learned
+
+Through this project, I learned how to:
+
+- Build a full-stack application using Flask and MySQL
+- Containerize an application using Docker
+- Run multiple services using Docker Compose
+- Configure Nginx as a reverse proxy
+- Use Docker volumes for persistent database storage
+- Use Docker networks for container-to-container communication
+- Add health checks for application reliability
+- Use GitHub Actions for CI/CD automation
+- Push Docker images to Docker Hub
+- Apply basic DevSecOps practices using pip-audit and Trivy
+- Add monitoring using Prometheus and Grafana
+- Create a professional README with screenshots and project proof
+
 ---
 
 ## Future Improvements
 
-- Add Prometheus and Grafana dashboards
 - Add more unit tests for add, delete, and update task flows
+- Add user authentication
+- Add task priority and due date
 - Add frontend static file optimization
-- Add cloud deployment using AWS, Azure, or GCP
-- Add HTTPS using SSL certificate
+- Add database backup automation
+- Add HTTPS using SSL certificate if hosted publicly in the future
 
 ---
 
-
+## Author
 
 ### Vaisakh Jayan
 

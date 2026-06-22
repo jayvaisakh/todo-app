@@ -1,8 +1,23 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, Response, redirect, render_template, request, url_for
+from prometheus_client import Counter, generate_latest
 
 from db import get_connection
 
 app = Flask(__name__)
+
+REQUEST_COUNT = Counter(
+    "todo_app_requests_total",
+    "Total number of requests received by the To-Do Flask application",
+    ["method", "endpoint"],
+)
+
+
+@app.before_request
+def count_request():
+    REQUEST_COUNT.labels(
+        method=request.method,
+        endpoint=request.path,
+    ).inc()
 
 
 @app.route("/")
@@ -75,6 +90,11 @@ def delete_task(task_id):
     connection.close()
 
     return redirect(url_for("home"))
+
+
+@app.route("/metrics")
+def metrics():
+    return Response(generate_latest(), mimetype="text/plain")
 
 
 @app.route("/health")
