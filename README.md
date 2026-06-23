@@ -9,23 +9,22 @@ This project demonstrates containerization, reverse proxy routing, database pers
 
 ## Tech Stack
 
-<p align="left">
-  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/Flask-3.1.3-000000?style=for-the-badge&logo=flask&logoColor=white" />
-  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
-  <img src="https://img.shields.io/badge/Nginx-Alpine-009639?style=for-the-badge&logo=nginx&logoColor=white" />
-  <img src="https://img.shields.io/badge/Gunicorn-App_Server-499848?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Docker-Containerization-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
-  <img src="https://img.shields.io/badge/Docker_Compose-Multi_Container-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
-  <img src="https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
-  <img src="https://img.shields.io/badge/Docker_Hub-Registry-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
-  <img src="https://img.shields.io/badge/Prometheus-Monitoring-E6522C?style=for-the-badge&logo=prometheus&logoColor=white" />
-  <img src="https://img.shields.io/badge/Grafana-Dashboard-F46800?style=for-the-badge&logo=grafana&logoColor=white" />
-  <img src="https://img.shields.io/badge/Pytest-Testing-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" />
-  <img src="https://img.shields.io/badge/Flake8-Code_Quality-green?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/pip--audit-Dependency_Scan-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Trivy-Image_Scan-1904DA?style=for-the-badge" />
-</p>
+| Category | Technology |
+|---|---|
+| Backend | Python Flask |
+| Application Server | Gunicorn |
+| Database | MySQL 8.0 |
+| Reverse Proxy | Nginx Alpine |
+| Containerization | Docker |
+| Multi-container Setup | Docker Compose |
+| CI/CD | GitHub Actions |
+| Image Registry | Docker Hub |
+| Code Quality | Flake8 |
+| Unit Testing | Pytest |
+| Dependency Security Scan | pip-audit |
+| Image Security Scan | Trivy |
+| Monitoring | Prometheus |
+| Visualization | Grafana |
 
 ---
 
