@@ -1,3 +1,5 @@
+
+
 # Containerized Full-Stack To-Do Application
 
 A production-ready full-stack To-Do Management Application built using **Python Flask**, **MySQL**, **Nginx**, **Docker**, **Docker Compose**, **GitHub Actions**, **Docker Hub**, **Prometheus**, and **Grafana**.
@@ -819,18 +821,17 @@ Through this project, I learned how to:
 
 ## Author
 
-### Vaisakh Jayan
+**Vaisakh Jayan**
 
-#### Cloud & DevOps Learner
+<a href="https://github.com/jayvaisakh">
+  <img src="https://img.shields.io/badge/GitHub-jayvaisakh-181717?style=for-the-badge&logo=github&logoColor=white" />
+</a>
 
-<p align="left">
-  <a href="https://medium.com/@jaynvaisak" target="_blank">
-    <img src="https://img.shields.io/badge/Medium-000000?style=flat&logo=medium&logoColor=white" />
-  </a>
-  <a href="https://www.linkedin.com/in/jayvaisakh/" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white" />
-  </a>
-  <a href="https://github.com/jayvaisakh" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white" />
-  </a>
+<a href="https://hub.docker.com/u/jayvaisakh">
+  <img src="https://img.shields.io/badge/Docker_Hub-jayvaisakh-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+</a>
+
+<a href="https://medium.com/@jaynvaisak">
+  <img src="https://img.shields.io/badge/Medium-@jaynvaisak-000000?style=for-the-badge&logo=medium&logoColor=white" />
+</a>
 </p>
