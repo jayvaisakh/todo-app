@@ -51,53 +51,48 @@ The project includes:
 
 ### Application Flow
 
-```text
-User Browser
-    |
-    | http://localhost:8081
-    v
-Nginx Reverse Proxy
-    |
-    | app:5000
-    v
-Flask Application
-    |
-    | mysql:3306
-    v
-MySQL Database
-    |
-    v
-Docker Volume
+```mermaid
+flowchart TD
+    USER["User Browser<br/>http://localhost:8081"]
+    NGINX["Nginx Reverse Proxy"]
+    APP["Flask Application<br/>app:5000"]
+    MYSQL["MySQL Database<br/>mysql:3306"]
+    VOLUME[("Docker Volume<br/>Persistent MySQL Data")]
+
+    USER -->|"HTTP request"| NGINX
+    NGINX -->|"Reverse proxy"| APP
+    APP -->|"Database connection"| MYSQL
+    MYSQL -->|"Store persistent data"| VOLUME
 ```
 
 ### Monitoring Flow
 
-```text
-Flask App /metrics
-        |
-        v
-Prometheus
-        |
-        v
-Grafana
+```mermaid
+flowchart TD
+    FLASK["Flask Application<br/>/metrics endpoint"]
+    PROMETHEUS["Prometheus<br/>Metrics Collection"]
+    GRAFANA["Grafana<br/>Monitoring Dashboard"]
+
+    FLASK -->|"Scrapes application metrics"| PROMETHEUS
+    PROMETHEUS -->|"Prometheus data source"| GRAFANA
 ```
 
 ### CI/CD Flow
 
-```text
-Code Push
-   |
-   v
-GitHub Actions
-   |
-   v
-Flake8 + Pytest + pip-audit + Trivy
-   |
-   v
-Docker Image Build
-   |
-   v
-Docker Hub
+```mermaid
+flowchart TD
+    PUSH["Code Push to GitHub"]
+    ACTIONS["GitHub Actions"]
+    QUALITY["Code Quality and Testing<br/>Flake8 + Pytest"]
+    SECURITY["Security Scanning<br/>pip-audit + Trivy"]
+    BUILD["Docker Image Build"]
+    HUB["Docker Hub"]
+
+    PUSH --> ACTIONS
+    ACTIONS --> QUALITY
+    QUALITY --> SECURITY
+    SECURITY --> BUILD
+    BUILD -->|"Push image"| HUB
 ```
 
 ---
